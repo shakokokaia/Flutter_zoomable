@@ -1,6 +1,9 @@
 name: zoomable
-description: Zoom anything
+description: Zoom any Flutter Widget
 version: 0.0.1
+homepage: https://github.com/Tkko/Flutter_zoomable
+repository: https://github.com/Tkko/Flutter_zoomable
+
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
