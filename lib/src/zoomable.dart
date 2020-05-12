@@ -1,6 +1,6 @@
 part of zoomable;
 
-class Zoomable extends StatefulWidget {
+class Zoomable extends StatelessWidget {
   final Widget child;
   final ValueChanged<double> onZoomStart;
   final ValueChanged<double> onZoomEnd;
@@ -8,8 +8,12 @@ class Zoomable extends StatefulWidget {
   final double initialScale;
   final ValueChanged<double> onZoomUpdate;
   final bool doubleTapZoom;
+  final double maxScale;
+  final double doubleTapScale;
+  final Duration animationDuration;
+  final Color backgroundColor;
 
-  Zoomable({
+  const Zoomable({
     this.child,
     this.onZoomStart,
     this.onZoomEnd,
@@ -17,22 +21,29 @@ class Zoomable extends StatefulWidget {
     this.poppedOut = true,
     this.initialScale = 1,
     this.doubleTapZoom = true,
-  });
+    this.doubleTapScale = 2,
+    this.maxScale = 5,
+    this.backgroundColor = Colors.black12,
+    this.animationDuration = const Duration(milliseconds: 200),
+    Key key,
+  }) : super(key: key);
 
-  @override
-  _ZoomableState createState() => _ZoomableState();
-}
-
-class _ZoomableState extends State<Zoomable> {
   @override
   Widget build(BuildContext context) {
-    return widget.poppedOut
+    return poppedOut
         ? PoppedOutZoomable(
-            child: widget.child,
-            onZoomEnd: widget.onZoomEnd,
-            onZoomStart: widget.onZoomStart,
-            onZoomUpdate: widget.onZoomUpdate,
+            child: child,
+            onZoomEnd: onZoomEnd,
+            onZoomStart: onZoomStart,
+            onZoomUpdate: onZoomUpdate,
+            backgroundColor: backgroundColor,
+            animationDuration: animationDuration,
           )
-        : Center(child: Text('Popped in zoomable is in development'));
+        : StandardZoomable(
+            child: child,
+            maxScale: maxScale,
+            doubleTapScale: doubleTapScale,
+            animationDuration: animationDuration,
+          );
   }
 }

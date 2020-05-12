@@ -1,3 +1,5 @@
+library zoomable.example;
+
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +12,21 @@ extension on Random {
 
   String get randomMan =>
       'https://source.unsplash.com/collection/3733842/${Random().nextInt(20) + 1000}x${Random().nextInt(20) + 1000}';
+}
+
+extension on BoxDecoration {
+  BoxDecoration get cardDecoration => BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.indigo[50],
+            offset: Offset(0, 0),
+            blurRadius: 20,
+            spreadRadius: 0,
+          ),
+        ],
+      );
 }
 
 void main() => runApp(ZoomableApp());
@@ -32,66 +49,105 @@ class ZoomableHome extends StatefulWidget {
 class _ZoomableHomeState extends State<ZoomableHome> {
   @override
   Widget build(BuildContext context) {
-    final dSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          ListView.builder(itemBuilder: (_, int index) {
-            return Container(
-              height: 400,
-              width: dSize.width,
-              margin: EdgeInsets.only(bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(17),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.blueGrey.withOpacity(.3),
-                    offset: Offset(0, 6),
-                    blurRadius: 12,
-                    spreadRadius: 0,
-                  ),
-                ],
-              ),
-              child: Zoomable(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(17),
-                  child: Image.network(
-                    index % 2 == 0 ? Random().randomGirl : Random().randomMan,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            );
-          }),
-          _appbar,
+          ListView.builder(itemBuilder: (_, __) => ListItem()),
+          ZoomableAppBar(),
         ],
       ),
     );
   }
+}
 
-  Widget get _appbar => ClipRRect(
-        child: Container(
-          width: double.infinity,
-          height: 56 + MediaQuery.of(context).padding.top,
-          alignment: Alignment.bottomCenter,
-          color: Colors.white70,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-            child: SizedBox(
-              height: 56,
-              child: Center(
-                child: Text(
-                  'Zoomable 🔥',
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: .5),
-                  textAlign: TextAlign.center,
-                ),
+class ZoomableAppBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      child: Container(
+        width: double.infinity,
+        height: 56 + MediaQuery.of(context).padding.top,
+        alignment: Alignment.bottomCenter,
+        color: Colors.white70,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: SizedBox(
+            height: 56,
+            child: Center(
+              child: Text(
+                'Zoomable 🔥',
+                style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: .5),
+                textAlign: TextAlign.center,
               ),
             ),
           ),
         ),
-      );
+      ),
+    );
+  }
+}
+
+class ListItem extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final imgUrl =
+        Random().nextInt(2) == 0 ? Random().randomGirl : Random().randomMan;
+    final textTheme = Theme.of(context).textTheme;
+    return Container(
+      height: 400,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.all(30),
+      decoration: BoxDecoration().cardDecoration,
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: ClipRRect(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                child: Zoomable(
+                  child: Image.network(
+                    imgUrl,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: ListTile(
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: Image.network(
+                  imgUrl,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              title: Text(
+                'Zoomable Kurdadze',
+                style: textTheme.subtitle1.copyWith(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              subtitle: Text(
+                '22m ago',
+                style: textTheme.caption,
+              ),
+              trailing: Icon(
+                Random().nextInt(2) == 0
+                    ? Icons.favorite
+                    : Icons.favorite_border,
+                color: Colors.redAccent,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

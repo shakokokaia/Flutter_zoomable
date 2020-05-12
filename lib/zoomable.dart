@@ -8,6 +8,6 @@ import 'package:flutter/material.dart';
 
 part 'src/zoomable.dart';
 
-part 'src/zoomable_overlay.dart';
-
 part 'src/popped_out_zoomable.dart';
+
+part 'src/standard_zoomable.dart';
