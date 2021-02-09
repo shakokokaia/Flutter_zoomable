@@ -32,18 +32,21 @@ class Zoomable extends StatelessWidget {
   Widget build(BuildContext context) {
     return poppedOut
         ? PoppedOutZoomable(
-            child: child,
-            onZoomEnd: onZoomEnd,
-            onZoomStart: onZoomStart,
-            onZoomUpdate: onZoomUpdate,
-            backgroundColor: backgroundColor,
-            animationDuration: animationDuration,
-          )
+      child: child,
+      onZoomEnd: onZoomEnd,
+      onZoomStart: onZoomStart,
+      onZoomUpdate: onZoomUpdate,
+      backgroundColor: backgroundColor,
+      animationDuration: animationDuration,
+    )
         : StandardZoomable(
-            child: child,
-            maxScale: maxScale,
-            doubleTapScale: doubleTapScale,
-            animationDuration: animationDuration,
-          );
+      child: child,
+      onZoomEnd: onZoomEnd,
+      onZoomStart: onZoomStart,
+      onZoomUpdate: onZoomUpdate,
+      maxScale: maxScale,
+      doubleTapScale: doubleTapScale,
+      animationDuration: animationDuration,
+    );
   }
 }

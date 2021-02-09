@@ -7,9 +7,9 @@ class ZoomableValue {
   const ZoomableValue({this.position, this.scale = 1});
 
   ZoomableValue copyWith({Offset position, double scale}) => ZoomableValue(
-        position: position ?? this.position,
-        scale: scale ?? this.scale,
-      );
+    position: position ?? this.position,
+    scale: scale ?? this.scale,
+  );
 }
 
 class PoppedOutZoomable extends StatefulWidget {
@@ -53,7 +53,7 @@ class _PoppedOutZoomableState extends State<PoppedOutZoomable> {
         onScaleEnd: _onScaleEnd,
         child: Container(
           foregroundDecoration:
-              _zooming ? BoxDecoration(color: widget.backgroundColor) : null,
+          _zooming ? BoxDecoration(color: widget.backgroundColor) : null,
           child: Opacity(
             opacity: widget.backgroundColor != null ? _zooming ? 0 : 1 : 1,
             child: widget.child,
@@ -182,13 +182,13 @@ class ZoomableState extends State<ZoomableOverlay>
       vsync: this,
       duration: widget.animationDuration,
     )..addListener(() {
-        setState(() {
-          _position = Offset.lerp(_position, widget.origin,
-              Curves.easeInOut.transform(_reverseAnimationController.value));
-          _scale = lerpDouble(_scale, 1,
-              Curves.easeInOut.transform(_reverseAnimationController.value));
-        });
+      setState(() {
+        _position = Offset.lerp(_position, widget.origin,
+            Curves.easeInOut.transform(_reverseAnimationController.value));
+        _scale = lerpDouble(_scale, 1,
+            Curves.easeInOut.transform(_reverseAnimationController.value));
       });
+    });
     _reverseAnimationController.forward();
   }
 
