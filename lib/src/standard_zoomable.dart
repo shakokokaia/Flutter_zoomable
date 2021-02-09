@@ -74,6 +74,7 @@ class _StandardZoomableState extends State<StandardZoomable>
     if (targetScale == 1.0) {
       _animationOffset(Offset.zero);
     }
+  widget.onZoomUpdate(targetScale);
   }
 
   void _onScaleStart(ScaleStartDetails details) {
